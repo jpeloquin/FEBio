@@ -20,8 +20,8 @@ MKL_LIB += $(MKL_PATH)/libmkl_core.a $(MKL_PATH)/libmkl_intel_thread.a -Wl,--end
 MKL_LIB += -liomp5 -pthread -lz
 
 # Levmar library
-LEV_LIB = -L/home/sci/mherron/Resources/levmar-2.6 -llevmar
-LEV_INC = /home/sci/mherron/Resources/levmar-2.6
+LEV_LIB = -L$(LEVMAR_PATH) -llevmar
+LEV_INC = $(LEVMAR_PATH)
 
 # GSL library
 #GSL_LIB = -lgsl
@@ -36,4 +36,4 @@ SUPERLUMT_LIB =	-lsuperlu_mt_OPENMP
 
 LIBS = -L$(FEBDIR)/build/lib $(LEV_LIB) $(MKL_LIB) $(GSL_LIB) '-Wl,-rpath,$$ORIGIN'
 
-INC = -I$(INTEL_INC) -I$(FEBDIR) -I$(FEBDIR)build/include -I/home/sci/mherron/Resources/levmar-2.6 -I$(LEV_INC)
+INC = -I$(INTEL_INC) -I$(LEV_INC) -I$(FEBDIR) -I$(FEBDIR)build/include

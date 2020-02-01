@@ -66,13 +66,21 @@ d:	Configuration for a version of FEBio that allows FEBio to dump information ab
 g:	Configuration used to produce a debug executable  
 s:	Configuration used to build a sequential version of FEBio in which no multithreading is used.  
 
-Once a build configuration has been decided on and the `Mkdir.bash` script has been run, simply run the make command followed by the configuration name as argument. For example, to build the lnx64 configuration you would run:
+Once a build configuration has been decided on and the `Mkdir.bash` script has been run, set any required environment variables and run the make command with the configuration name as its argument.
+
+Environment variables:
+
+* (lnx64 and gcc64 only) Set `LEVMAR_PATH` to the directory containing the compiled Lourakis levmar library, `liblevmar.a`.
+
+* Set `MKLROOT` to the directory containing the MKL `bin`, `include`, and `lib` directories.  For example, `/opt/intel/compilers_and_libraries_2020.1.217/linux/mkl/`.
+
+For example, to build the lnx64 configuration you would run:
 
 ```
-make lnx64
+MKLROOT=/path/to/mkl LEVMAR_PATH=/path/to/levmar make lnx64
 ```
 
-If your machine's processor has multiple cores, it is possible to decrease your build time by parallelizing your build with the -j flag followed by the number of cores you would like make to use. For example, to build the lnx64 configuration using 8 cores you would run:
+If your machine's processor has multiple cores, it is possible to decrease your build time by parallelizing your build with the -j flag followed by the number of cores you would like make to use. For example, to build the lnx64 configuration using 8 cores you would run (omitting environment variables):
 ```
 make lnx64 -j8
 ```
