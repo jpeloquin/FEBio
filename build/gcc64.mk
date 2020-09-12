@@ -1,4 +1,4 @@
-# Make include file for FEBio on Linux
+# Make include file for Linux GCC 64-bit build
 
 include $(FEBDIR)build/lnx64.mk
 

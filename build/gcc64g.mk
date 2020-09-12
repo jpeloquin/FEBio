@@ -1,9 +1,5 @@
-# Make include file for FEBio on Linux
+# Make include file for Linux GCC 64-bit debug build
 
-include $(FEBDIR)build/lnx64.mk
+include $(FEBDIR)build/gcc64.mk
 
-CC = g++
-
-FLG = -g -fPIC -fopenmp -std=c++11
-
-INC = -I$(FEBDIR) -I$(FEBDIR)build/include
+FLG := $(FLG:O3=g)
