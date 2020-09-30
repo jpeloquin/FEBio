@@ -501,9 +501,34 @@ void FEBioModel::Write(unsigned int nwhen)
 							if ((inRange == false) || (isStride == false)) bout = true;
 						}
 						break;
-					case CB_STEP_SOLVED: if (nplt == FE_PLOT_STEP_FINAL) bout = true;  break;
-					}
-				}
+					case CB_STEP_SOLVED:
+            if (nplt == FE_PLOT_STEP_FINAL) bout = true;
+            // When the final time point of the step is a must point and
+            // the auto stepper happens to choose a point within the
+            // tolerance for the final time, the step is declared solved
+            // before FETimeStepController::CheckMustPoints() can set
+            // the m_nmust flag.  This scenario is missed under the
+            // CB_MAJOR_ITERS case above, so we catch it here.
+            if ((nplt == FE_PLOT_MUST_POINTS) && (pstep->m_mpcount > 0))
+              {
+                auto mpseen = pstep->m_timeController.m_next_must;  // counting 0
+                if (pstep->m_mpcount > mpseen)
+                  {
+                    bout = true;
+                    mpseen++;
+                  }
+                if (pstep->m_mpcount > mpseen)
+                  {
+                    // If we're still missing time points, throw an
+                    // error.  This should not be reached, but I've seen
+                    // the time controller seems buggy, so we want an
+                    // explicit error if it goes wrong.
+                    felog.printf("Error: %d must points were requested for this analysis step, but the plotfile writer saw at most %d.  The most likely reason is a bug in FEBio.\n", pstep->m_mpcount, mpseen);
+                  }
+              }
+            break;
+          }
+        }
 
 				// output the state if requested
 				if (bout) 

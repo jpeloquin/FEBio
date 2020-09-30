@@ -107,6 +107,7 @@ void FEAnalysis::CopyFrom(FEAnalysis* step)
 	m_nanalysis = step->m_nanalysis;
 
 	m_ntime      = step->m_ntime;
+  m_mpcount    = step->m_mpcount;
 	m_final_time = step->m_final_time;
 	m_dt         = step->m_dt;
 	m_dt0        = step->m_dt0;
@@ -220,6 +221,28 @@ bool FEAnalysis::Activate()
 	if (m_ntime == -1) Dt = m_final_time; else Dt = m_dt0*m_ntime;
 	m_tstart = m_fem.GetStartTime();
 	m_tend = m_tstart + Dt;
+
+  // Count the must points.  This count is needed so that other
+  // functions, FEBioModel::Write in particular, know how many must
+  // points they are supposed to process.
+  m_mpcount = 0;  // if no must point curve
+  if (m_timeController.m_nmplc >= 0)
+    {
+      FEDataLoadCurve& lc = dynamic_cast<FEDataLoadCurve&>(*m_fem.GetLoadCurve(m_timeController.m_nmplc));
+      // Filter the "load" curve, retaining only must points
+      std::vector<double> times;
+      for (int i=0; i<lc.Points(); ++i)
+        {
+          double t = lc.LoadPoint(i).time;
+          if (t >= m_tstart && t <= m_tend) times.push_back(t);
+        }
+      // The origin time point of the current simulation step is always a
+      // must point, so we count it even if it isn't explicitly in the
+      // user-provided load curve
+      // (https://forums.febio.org/showthread.php?49-must-points).
+      if (m_tstart != times[0]) { m_mpcount++; }
+      m_mpcount += times.size();
+    }
 
 	// For now, add all domains to the analysis step
 	FEMesh& mesh = m_fem.GetMesh();

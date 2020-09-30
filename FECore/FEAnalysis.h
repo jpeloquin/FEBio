@@ -156,6 +156,7 @@ public:
 	// --- Time Step Data ---
 	//{
 		int		m_ntime;		//!< nr of timesteps
+    int   m_mpcount;  //!< # of must points for this step
 		double	m_final_time;	//!< end time for this time step
 		double	m_dt;			//!< current time step 
 		double	m_dt0;			//!< initial time step size
