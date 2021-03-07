@@ -423,3 +423,6 @@ cmbuild/
 
 ## Visual Studio Code
 .vscode/
+
+## Headers for build dependencies
+build/include
