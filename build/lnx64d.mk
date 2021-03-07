@@ -8,12 +8,12 @@ DEF = -DLINUX -DMKL_ISS -DPARDISO -DHAVE_ZLIB -DSVN
 FLG = -g -O3 -fPIC -fopenmp -qopenmp-link=static -static-intel -no-intel-extensions -std=c++11 -static-libstdc++
 
 # Intel Compiler
-INTELROOT = $(subst /mkl,,$(MKLROOT))/compiler
-INTEL_INC = $(INTELROOT)/include
+INTELROOT = $(subst /mkl,/compiler,$(MKLROOT))/linux/compiler
 INTEL_LIB = $(INTELROOT)/lib/intel64
 
 # Pardiso solver
 MKL_PATH = $(MKLROOT)/lib/intel64
+MKL_INC = $(MKLROOT)/include
 MKL_LIB = -Wl,--start-group $(MKL_PATH)/libmkl_intel_lp64.a
 MKL_LIB += $(MKL_PATH)/libmkl_core.a $(MKL_PATH)/libmkl_intel_thread.a -Wl,--end-group
 MKL_LIB += $(INTEL_LIB)/libiomp5.a -pthread -lz
@@ -34,4 +34,4 @@ SUPERLUMT_LIB =	-lsuperlu_mt_OPENMP
 
 LIBS = -L$(FEBDIR)/build/lib $(LEV_LIB) $(MKL_LIB) $(GSL_LIB)
 
-INC = -I$(INTEL_INC) -I$(FEBDIR) -I$(FEBDIR)build/include
+INC = -I$(MKL_INC) -I$(FEBDIR) -I$(FEBDIR)build/include
