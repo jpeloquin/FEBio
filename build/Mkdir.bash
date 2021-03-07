@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -v
 
 if [ $# == 0 ]; then
@@ -5,18 +6,16 @@ if [ $# == 0 ]; then
 	exit
 fi
 
-mkdir $1
-cd $1
-mkdir FEBio3
-mkdir FEBioLib
-mkdir FEBioMech
-mkdir FEBioMix
-mkdir FEBioOpt
-mkdir FEBioPlot
-mkdir FEBioTest
-mkdir FEBioFluid
-mkdir FEBioXML
-mkdir FECore
-mkdir NumCore
-
-
+mkdir -p "$1"
+cd "$1"
+mkdir -p FEBio3
+mkdir -p FEBioLib
+mkdir -p FEBioMech
+mkdir -p FEBioMix
+mkdir -p FEBioOpt
+mkdir -p FEBioPlot
+mkdir -p FEBioTest
+mkdir -p FEBioFluid
+mkdir -p FEBioXML
+mkdir -p FECore
+mkdir -p NumCore
