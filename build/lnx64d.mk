@@ -1,11 +1,11 @@
 # Make include file for FEBio on Linux 64 bit
 
-CC = icpc
+CC = icpc  # tested with icpc 2021.1 Beta 20201112
 
 # Remove -DHAVE_LEVMAR and $(LEV_LIB) from LIBS if not linking with the Lourakis levmar routine.
 DEF = -DLINUX -DMKL_ISS -DPARDISO -DHAVE_ZLIB -DSVN
 
-FLG = -g -O3 -fPIC -fopenmp -static-intel -no-intel-extensions -std=c++11 -static-libstdc++
+FLG = -g -O3 -fPIC -fopenmp -qopenmp-link=static -static-intel -no-intel-extensions -std=c++11 -static-libstdc++
 
 # Intel Compiler
 INTELROOT = $(subst /mkl,,$(MKLROOT))/compiler
