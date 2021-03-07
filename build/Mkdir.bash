@@ -6,6 +6,8 @@ if [ $# == 0 ]; then
 	exit
 fi
 
+mkdir -p lib
+
 mkdir -p "$1"
 cd "$1"
 mkdir -p FEBio3
@@ -19,3 +21,4 @@ mkdir -p FEBioFluid
 mkdir -p FEBioXML
 mkdir -p FECore
 mkdir -p NumCore
+mkdir -p FEAMR
