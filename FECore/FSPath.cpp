@@ -27,6 +27,7 @@ SOFTWARE.*/
 #include <regex>
 #include <string>
 #include "FSPath.h"
+#include <cstring>
 
 
 bool FSPath::isAbsolute(const char* path)
