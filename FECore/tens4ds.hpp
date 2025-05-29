@@ -44,6 +44,13 @@ inline tens4ds::tens4ds(const double g)
 
 inline tens4ds::tens4ds(double m[6][6])
 {
+  // Index abbreviation convention:
+  // 00 → 0
+  // 11 → 1
+  // 22 → 2
+  // 01, 10 → 3
+  // 12, 21 → 4
+  // 20, 02 → 5
 	d[ 0] = m[0][0];
 	d[ 1] = m[0][1]; d[ 2] = m[1][1];
 	d[ 3] = m[0][2]; d[ 4] = m[1][2]; d[ 5] = m[2][2];
@@ -679,38 +686,38 @@ inline tens4ds dyad5s(const mat3ds& a, const mat3ds& b)
 }
 
 //-----------------------------------------------------------------------------
-// (a dyad4s b)_ijkl = (a_ik b_jl + a_il b_jk)/2 +  (b_ik a_jl + b_il a_jk)/2
+// (a dyad4s b)_ijkl = (a_ik b_jl + a_il b_jk)/2 + (b_ik a_jl + b_il a_jk)/2
 inline tens4ds dyad4s(const mat3ds& a, const mat3ds& b)
 {
 	tens4ds c;
-    
-    c.d[ 0] = 2*a.xx()*b.xx();
 
-    c.d[ 1] = 2*a.xy()*b.xy();
-    c.d[ 2] = 2*a.yy()*b.yy();
+  c.d[ 0] = 2*a.xx()*b.xx();  // 0,0,0,0
 
-    c.d[ 3] = 2*a.xz()*b.xz();
-    c.d[ 4] = 2*a.yz()*b.yz();
-    c.d[ 5] = 2*a.zz()*b.zz();
+  c.d[ 1] = 2*a.xy()*b.xy();  // 0,0,1,1
+  c.d[ 2] = 2*a.yy()*b.yy();  // 1,1,1,1
 
-    c.d[ 6] = a.xx()*b.xy() + b.xx()*a.xy();
-    c.d[ 7] = a.xy()*b.yy() + b.xy()*a.yy();
-    c.d[ 8] = a.xz()*b.yz() + b.xz()*a.yz();
-    c.d[ 9] = (a.xx()*b.yy() + 2*a.xy()*b.xy() + b.xx()*a.yy())/2;
+  c.d[ 3] = 2*a.xz()*b.xz();  // 0,0,2,2
+  c.d[ 4] = 2*a.yz()*b.yz();  // 1,1,2,2
+  c.d[ 5] = 2*a.zz()*b.zz();  // 2,2,2,2
 
-    c.d[10] = a.xy()*b.xz() + b.xy()*a.xz();
-    c.d[11] = a.yy()*b.yz() + b.yy()*a.yz();
-    c.d[12] = a.yz()*b.zz() + b.yz()*a.zz();
-    c.d[13] = (a.xy()*b.yz() + a.xz()*b.yy() + b.xy()*a.yz() + b.xz()*a.yy())/2;
-    c.d[14] = (a.yy()*b.zz() + 2*a.yz()*b.yz() + b.yy()*a.zz())/2;
+  c.d[ 6] = a.xx()*b.xy() + b.xx()*a.xy();  // 0,0,0,1
+  c.d[ 7] = a.xy()*b.yy() + b.xy()*a.yy();  // 1,1,0,1
+  c.d[ 8] = a.xz()*b.yz() + b.xz()*a.yz();  // 2,2,0,1
+  c.d[ 9] = (a.xx()*b.yy() + 2*a.xy()*b.xy() + b.xx()*a.yy())/2;  // 0,1,0,1
 
-    c.d[15] = a.xx()*b.xz() + b.xx()*a.xz();
-    c.d[16] = a.xy()*b.yz() + b.xy()*a.yz();
-    c.d[17] = a.xz()*b.zz() + b.xz()*a.zz();
-    c.d[18] = (a.xx()*b.yz() + a.xy()*b.xz() + b.xx()*a.yz() + b.xy()*a.xz())/2;
-    c.d[19] = (a.xy()*b.zz() + a.xz()*b.yz() + b.xy()*a.zz() + b.xz()*a.yz())/2;
-    c.d[20] = (a.xx()*b.zz() + 2*a.xz()*b.xz() + b.xx()*a.zz())/2;
-    
+  c.d[10] = a.xy()*b.xz() + b.xy()*a.xz();  // 0,0,1,2
+  c.d[11] = a.yy()*b.yz() + b.yy()*a.yz();  // 1,1,1,2
+  c.d[12] = a.yz()*b.zz() + b.yz()*a.zz();  // 2,2,1,2
+  c.d[13] = (a.xy()*b.yz() + a.xz()*b.yy() + b.xy()*a.yz() + b.xz()*a.yy())/2;  // 0,1,1,2
+  c.d[14] = (a.yy()*b.zz() + 2*a.yz()*b.yz() + b.yy()*a.zz())/2;  // 1,2,1,2
+
+  c.d[15] = a.xx()*b.xz() + b.xx()*a.xz();  // 0,0,0,2
+  c.d[16] = a.xy()*b.yz() + b.xy()*a.yz();  // 1,1,0,2
+  c.d[17] = a.xz()*b.zz() + b.xz()*a.zz();  // 2,2,0,2
+  c.d[18] = (a.xx()*b.yz() + a.xy()*b.xz() + b.xx()*a.yz() + b.xy()*a.xz())/2;  // 0,1,0,2
+  c.d[19] = (a.xy()*b.zz() + a.xz()*b.yz() + b.xy()*a.zz() + b.xz()*a.yz())/2;  // 1,2,0,2
+  c.d[20] = (a.xx()*b.zz() + 2*a.xz()*b.xz() + b.xx()*a.zz())/2;  // 0,2,0,2
+
 	return c;
 
 }
