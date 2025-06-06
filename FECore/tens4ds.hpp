@@ -627,7 +627,7 @@ inline tens4ds dyad4s(const mat3ds& a)
 }
 
 //-----------------------------------------------------------------------------
-// (a dyad4s b)_ijkl = (a_ik b_jl + a_il b_jk)/2 +  (b_ik a_jl + b_il a_jk)/2
+// (a dyad4s b)_ijkl = (a_ik b_jl + a_il b_jk) + (b_ik a_jl + b_il a_jk)
 inline tens4ds dyad4s(const mat3ds& a, const mat3dd& b)
 {
 	tens4ds c;
